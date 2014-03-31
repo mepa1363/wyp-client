@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>WPS Client</title>
+
+    <link rel="icon" type="image/png" href="css/images/fav.png"/>
+
+    <link rel="stylesheet" href="css/jquery-ui-1.10.0.custom.css"/>
+    <link rel="stylesheet" href="css/leaflet.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/MarkerCluster.css"/>
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="css/l.geosearch.css"/>
+
+    <script type="text/javascript" src="js/leaflet.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.0.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/globalize.js"></script>
+    <script type="text/javascript" src="js/globalize.culture.de-DE.js"></script>
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/bullet.js"></script>
+    <script type="text/javascript" src="js/leaflet.markercluster.js"></script>
+    <script type="text/javascript" src="js/l.control.geosearch.js"></script>
+    <script type="text/javascript" src="js/l.geosearch.provider.google.js"></script>
+</head>
+<body>
+
+
+<div id="site_content">
+<div id="about-dialog" title="WalkYourPlace" style="display:none;"><p style="text-align:justify">We have developed a web-based tool called
+    WalkYourPlace for assessment
+    of
+    accessibility to urban facilities using <i>quality of life</i> indicators, such as the number of grocery stores,
+    shopping
+    and recreation facilities, and local crime. The system evaluates in real time an area that is accessible using
+    pedestrian, transit, and cycling infrastructure. The WalkYourPlace system has been designed and developed based on
+    principles of Spatial Data Infrastructure (SDI) and Service Oriented Architecture (SOA) frameworks to provide data
+    and service interoperability.</p>
+
+    <p>
+        For more information please visit <a href="http://gisciencegroup.ucalgary.ca/wiki/Accessibility_Assessment"
+                                             style="color:#8DC63F" target="_blank">GIScience
+        Group Wiki</a>.</p>
+
+    <div style="float: left; margin-top: 15px;"><a href="http://www.planyourplace.ca/" target="_blank"><img
+            src="css/images/pyp.png" height="50" alt="PlanYourPlace" border="0"/></a></div>
+    <div style="float: right"><a href="http://ucalgary.ca/" target="_blank"><img src="css/images/uofc.png" height="70"
+                                                                                 alt="University of Calgary"
+                                                                                 border="0"/></a></div>
+</div>
+<div id="map"></div>
+
+<div id="sidebar">
+<div id="accordion">
+<h3>WalkScore Model</h3>
+
+<div>
+    <form id="call_wps_ws" method="post" action="#">
+        <fieldset>
+            <ul>
+                <li>
+                    <input type="hidden" id="start_point_ws" name="start_point_ws" readonly/>
+                </li>
+                <li>
+                    <label for="walking_radius_ws">Walking Radius: </label>
+                    <select name="walking_radius_ws" id="walking_radius_ws">
+                        <option value="1.25" selected="selected">1250 m</option>
+                        <option value="1.60934">1609.34 m</option>
+                    </select>
+                </li>
+
+                <li><input type="checkbox" id="distance_decay_function_ws" name="distance_decay_function"/>Distance
+                    Decay Function
+                </li>
+
+                <input type="button" class="button" onclick="call_wps('walkscore')"
+                       value="Get Accessibility Score"/>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+<h3>WalkYourPlace Model</h3>
+
+<div>
+    <form id="call_wps_wyp" method="post" action="#">
+        <fieldset>
+            <ul>
+                <li>
+                    <input type="hidden" id="start_point_wyp" name="start_point_wyp" readonly/>
+                </li>
+                <li>
+                    <label for="walking_radius_wyp">Walking Radius: </label>
+                    <select name="walking_radius_wyp" id="walking_radius_wyp">
+                        <option value="1.25" selected="selected">1250 m</option>
+                        <option value="1.60934">1609.34 m</option>
+                    </select>
+                </li>
+
+                <li><input type="checkbox" id="distance_decay_function_wyp" name="distance_decay_function"/>Distance
+                    Decay Function
+                </li>
+
+
+                <input type="button" class="button" onclick="call_wps('walkyourplace')"
+                       value="Get Accessibility Score"/>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+<h3>Cycling Model</h3>
+
+<div>
+    <form id="call_wps_bike" method="post" action="#">
+        <fieldset>
+            <ul>
+                <li>
+                    <input type="hidden" id="start_point_bike" name="start_point_bike" readonly/>
+                </li>
+                <li>
+                    <label for="biking_time_period_amount">Maximum Cycling Time: </label>
+                    <input type="text" id="biking_time_period_amount"
+                           name="biking_time_period_amount"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">min</label>
+
+                    <div id="biking_time_period"
+                         style="width: 150px; height: 6px; margin-top:10px;"></div>
+                </li>
+
+                <li><input type="checkbox" id="distance_decay_function_bike"
+                           name="distance_decay_function"/>Distance
+                    Decay Function
+                </li>
+
+
+                <input type="button" class="button" onclick="call_wps('bike')"
+                       value="Get Accessibility Score"/>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+
+<h3>Walking Model</h3>
+
+<div>
+    <form id="call_wps_pedestrian" method="post" action="#">
+        <fieldset>
+            <ul>
+                <li>
+                    <input type="hidden" id="start_point_pedestrian" name="start_point_pedestrian"
+                           readonly/>
+                </li>
+                <li>
+                    <label for="walking_time_period_amount_pedestrian">Maximum Walking Time: </label>
+                    <input type="text" id="walking_time_period_amount_pedestrian"
+                           name="walking_time_period_amount_pedestrian"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">min</label>
+
+                    <div id="walking_time_period_pedestrian"
+                         style="width: 150px; height: 6px; margin-top:10px;"></div>
+                </li>
+                <li>
+
+                    <label for="walking_speed_amount_pedestrian">Walking Speed: </label>
+                    <input type="text" id="walking_speed_amount_pedestrian"
+                           name="walking_speed_amount_pedestrian"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">km/hr</label>
+
+                    <div id="walking_speed_pedestrian_parent">
+                        <span style="font-size: 10px;">Slow</span>
+
+                        <div id="walking_speed_pedestrian"
+                             style="width: 100px; height: 6px; margin:15px 10px auto 15px; display: inline-block;"></div>
+                        <span style="font-size: 10px;">Fast</span>
+                    </div>
+                </li>
+
+                <li><input type="checkbox" id="distance_decay_function_pedestrian"
+                           name="distance_decay_function"/>Distance
+                    Decay Function
+                </li>
+
+
+                <input type="button" class="button" onclick="call_wps('pedestrian')"
+                       value="Get Accessibility Score"/>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+<h3>Transit & Walking Model</h3>
+
+<div>
+    <form id="call_wps_transit" method="post" action="#">
+        <fieldset>
+            <ul>
+                <li>
+                    <input type="hidden" id="start_point_transit" name="start_point_transit" readonly/>
+                </li>
+                <li>
+                    <label for="walking_time_period_amount_transit">Maximum Walking Time: </label>
+                    <input type="text" id="walking_time_period_amount_transit"
+                           name="walking_time_period_amount_transit"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">min</label>
+
+                    <div id="walking_time_period_transit"
+                         style="width: 150px; height: 6px; margin-top:10px;"></div>
+                </li>
+                <li>
+
+                    <label for="walking_speed_amount_transit">Walking Speed: </label>
+                    <input type="text" id="walking_speed_amount_transit"
+                           name="walking_speed_amount_transit"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">km/hr</label>
+
+                    <div id="walking_speed_transit_parent">
+                        <span style="font-size: 10px;">Slow</span>
+
+                        <div id="walking_speed_transit"
+                             style="width: 100px; height: 6px; margin:15px 10px auto 15px; display: inline-block;"></div>
+                        <span style="font-size: 10px;">Fast</span>
+                    </div>
+                </li>
+                <li>
+                    <label for="bus_waiting_time_amount_transit">Bus Wait Time: </label>
+                    <input type="text" id="bus_waiting_time_amount_transit"
+                           name="bus_waiting_time_amount_transit"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">min</label>
+
+                    <div id="bus_waiting_time_transit"
+                         style="width: 150px; height: 6px; margin-top:10px;"></div>
+                </li>
+                <li>
+                    <label for="bus_riding_time_amount_transit">Bus Ride Time: </label>
+                    <input type="text" id="bus_riding_time_amount_transit"
+                           name="bus_riding_time_amount_transit"
+                           style="width: 20px;" readonly/>
+                    <label class="unit_label">min</label>
+
+                    <div id="bus_riding_time_transit"
+                         style="width: 150px; height: 6px; margin-top:10px;"></div>
+                </li>
+
+                <li><label for="walking_start_time">Start Time:</label>
+                    <input id="walking_start_time" name="walking_start_time" style="width: 50px;"/></li>
+
+                <li><input type="checkbox" id="distance_decay_function_transit"
+                           name="distance_decay_function"/>Distance
+                    Decay Function
+                </li>
+
+
+                <input type="button" class="button" onclick="call_wps('transit')"
+                       value="Get Accessibility Score"/>
+            </ul>
+        </fieldset>
+    </form>
+</div>
+</div>
+</div>
+<input type="hidden" id="accessibility_score">
+<input type="hidden" id="crime_index">
+</div>
+<div id="out_of_bound_error" title="Out of Bound" style="display: none;">
+    <p>The walkshed cannot be generated for this area! Please try again!</p>
+</div>
+
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
