@@ -280,15 +280,6 @@ function call_wps(approach) {
                         style: shed_style
                     });
 
-//                    if (bus_stops != '') {
-//                        bus_stops_overlay = L.geoJson(bus_stops, {
-//                            onEachFeature: function (feature, layer) {
-//                                layer.setIcon(new L.Icon({
-//                                    iconUrl: 'css/images/bus-18.png'
-//                                }));
-//                            }
-//                        });
-//                    }
                 }
 
 
