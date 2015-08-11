@@ -7,11 +7,11 @@ $("#accordion").accordion({
 
 //////////////////////////Leaflet initialization - START ///////////////////////////////////////////////////////////////
 
-var calgary_grey = L.tileLayer('http://136.159.122.90/PHPTileServer/CalgaryGrey/{z}/{x}/{y}.png', {
-    attribution: 'Data &copy; OpenStreetMap contributors. Licensed under the Open Data Commons Open Database License. POI Data &copy; MapQuest 2013. Crime Data &copy; Calgary Police Service 2013. Design CC-BY <a href="http://gisciencegroup.ucalgary.ca/">GI Science Group.</a>', wax: 'http://136.159.122.90/PHPTileServer/CalgaryGrey.tilejson'});
+var calgary_grey = L.tileLayer('http://webmapping.ucalgary.ca/PHPTileServer/CalgaryGrey/{z}/{x}/{y}.png', {
+    attribution: 'Data &copy; OpenStreetMap contributors. Licensed under the Open Data Commons Open Database License. POI Data &copy; MapQuest 2013. Crime Data &copy; Calgary Police Service 2013. Design CC-BY <a href="http://gisciencegroup.ucalgary.ca/">GI Science Group.</a>', wax: 'http://webmapping.ucalgary.ca/PHPTileServer/CalgaryGrey.tilejson'});
 
-var calgary_osm = L.tileLayer('http://136.159.122.90/PHPTileServer/CalgaryOSM/{z}/{x}/{y}.png', {
-    attribution: 'Data &copy; OpenStreetMap contributors. Licensed under the Open Data Commons Open Database License.  POI Data &copy; MapQuest 2013. Crime Data &copy; Calgary Police Service 2013. Design CC-BY <a href="http://gisciencegroup.ucalgary.ca/">GI Science Group.</a>', wax: 'http://136.159.122.90/PHPTileServer/CalgaryOSM.tilejson'});
+var calgary_osm = L.tileLayer('http://webmapping.ucalgary.ca/PHPTileServer/CalgaryOSM/{z}/{x}/{y}.png', {
+    attribution: 'Data &copy; OpenStreetMap contributors. Licensed under the Open Data Commons Open Database License.  POI Data &copy; MapQuest 2013. Crime Data &copy; Calgary Police Service 2013. Design CC-BY <a href="http://gisciencegroup.ucalgary.ca/">GI Science Group.</a>', wax: 'http://webmapping.ucalgary.ca/PHPTileServer/CalgaryOSM.tilejson'});
 
 var map_center = new L.LatLng(51.057, -114.066);
 
